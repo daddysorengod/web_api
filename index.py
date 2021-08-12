@@ -1,8 +1,7 @@
 from fastapi import FastAPI
+from routes.index import userctl
+
 
 app = FastAPI()
-
-@app.get("/")
-def index():
-    return "alo alo 123"
+app.include_router(userctl)
 
