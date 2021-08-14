@@ -5,6 +5,7 @@ from sqlalchemy import log, sql
 from config.db import conn 
 from models.index import userdb
 from schemas.index import user
+import numpy as np
 
 userctl = APIRouter()
 
@@ -22,9 +23,16 @@ async def findUserbyid(id:int):
 
 @userctl.get("/user/searchname/{name}")
 async def findUserbyName(name:str):
-    sql = "select * from tbl_user where `tbl_user`.`name` like '%{}%'"          
-    return conn.execute(sql.format(name)).fetchall()
-    # return sql.format(name)
+    sql = "select * from tbl_user where `tbl_user`.`name` like %s"          
+    return conn.execute(sql,("%"+name+"%")).fetchall()
+    # sql = "select * from tbl_user"
+    # cursor = conn.execute(sql).fetchall()
+    # arr = np.array([],dtype=object)
+    # arr1 = np.append(arr,cursor)
+    # for row in cursor:
+    #     if name in row['name']:
+    #         arr = np.append(arr,row)
+    # return conn.execute(userdb.select().where(userdb.c.name.like("%fTi%")))
 
 # @userctl.get("/users/{username}")
 # async def read_user(username: str):
