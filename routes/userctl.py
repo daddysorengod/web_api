@@ -1,11 +1,10 @@
-from os import name
-import re
+# from os import name
+# import re
 from fastapi import APIRouter
-from sqlalchemy import log, sql
 from config.db import conn 
 from models.index import userdb
 from schemas.index import user
-import numpy as np
+# import numpy as np
 
 userctl = APIRouter()
 
