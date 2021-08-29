@@ -7,15 +7,15 @@ productctl = APIRouter()
 
 @productctl.get("/product")
 async def showallproduct():
-    sql = "select * from tbl_product"
+    sql = "select * from tbl_product,tbl_category where tbl_product.category_id = tbl_category.id"
     return conn.execute(sql).fetchall()
 
-@productctl.post("/testfile")
-async def uploadfile(file: UploadFile = File(...)):
-    return {"file":file.filename}
+# @productctl.post("/testfile")
+# async def uploadfile(file: UploadFile = File(...)):
+#     return {"file":file.filename}
 
 @productctl.post("/product")
-async def root(newproduct: product):
+async def addproduct(newproduct: product):
     conn.execute(productdb.insert().values(
         product_name = newproduct.product_name,
         category_id = newproduct.category_id,
@@ -30,6 +30,12 @@ async def root(newproduct: product):
 @productctl.get("/product/{id}")
 async def findproductbyID(id: int):
     return conn.execute(productdb.select().where(productdb.c.id==id)).fetchall()
+
+@productctl.get("/product/full/{id}")
+async def getfullproduct(id:int):
+    # sql = "select * from tbl_product, tbl_category where tbl_product.id={} and tbl_product.category_id = tbl_category.id"
+    # return conn.execute(sql.format(id)).fetchall()
+    return
 
 @productctl.get("/product/searchname={name}")
 async def findproductbyName(name:str):

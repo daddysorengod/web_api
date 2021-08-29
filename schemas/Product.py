@@ -1,6 +1,7 @@
 from pydantic import BaseModel
-
-class product(BaseModel): 
+# from schemas.index import category
+class product(BaseModel):
+     
     product_name: str
     category_id: int
     product_quantity: int
@@ -8,5 +9,5 @@ class product(BaseModel):
     product_image: str
     product_description:str
     product_hot: int
-    
+    # ctg: category
     
