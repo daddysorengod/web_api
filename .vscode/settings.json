@@ -1,5 +1,7 @@
 {
-    "editor.fontFamily": "menlo monaco 'courier new' monospace",
+    "editor.fontFamily": "cascadia code",
     "editor.fontWeight": "null",
-    "editor.fontSize": 16
+    "editor.fontSize": 15,
+    "editor.codeActionsOnSave": null,
+    "terminal.integrated.lineHeight": 0
 }
