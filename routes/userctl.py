@@ -90,20 +90,41 @@ async def adduser_default(newuser: user):
 
 @userctl.put("/user/{id}")
 async def updateuser(id: int, newuser: user):
-    conn.execute(userdb.update().values(
-        name = newuser.name,
-        dob = newuser.dob,
-        email = newuser.email,
-        username = newuser.username,
-        password = newuser.password,
-        role = newuser.role,
-        image = newuser.image
-    ).where(userdb.c.id==id))
-    return "sua thanh cong"
+    check = True
+    msg: str
+    newuser.role = "default"
+    rs = conn.execute(userdb.select()).fetchall()
+    for humman in rs:
+        if humman['username'] == newuser.username or humman['email']==newuser.email: 
+            check = False
+            break
+    if check == False:
+        msg = "tai khoan hoac email da dc dang ky"
+    else:    
+        conn.execute(userdb.update().values(
+            name = newuser.name,
+            dob = newuser.dob,
+            email = newuser.email,
+            username = newuser.username,
+            password = newuser.password,
+            role = newuser.role,
+            image = newuser.image
+        ).where(userdb.c.id==id))
+        msg = "sua thanh cong"
+    return msg
 
 @userctl.delete("/user/{id}")
 async def deleteuser(id: int):
-    conn.execute(userdb.delete().where(userdb.c.id==id))
+    check = False
+    rs = conn.execute(userdb.select()).fetchall()
+    for humman in rs:
+        if humman['id'] == id:
+            check = True
+            break
+    if check == False:
+        msg = "khong ton tai nguoi dung"
+    else:
+        conn.execute(userdb.delete().where(userdb.c.id==id))
     return "xoa thanh cong"
 
 @userctl.post("/user/login")
