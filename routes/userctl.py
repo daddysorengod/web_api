@@ -124,7 +124,8 @@ async def deleteuser(id: int):
         msg = "khong ton tai nguoi dung"
     else:
         conn.execute(userdb.delete().where(userdb.c.id==id))
-    return "xoa thanh cong"
+        msg = "xoa thanh cong"
+    return msg
 
 @userctl.post("/user/login")
 async def login_app(username:str = Form(...), password:str = Form(...)):
