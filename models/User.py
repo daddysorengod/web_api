@@ -12,6 +12,7 @@ userdb = Table(
     Column("phone",String(255)),
     Column("username",String(255)),
     Column("password",String(255)),
-    Column("role",String(255))
+    Column("role",String(255)),
+    Column("image",String(255))
 )
 

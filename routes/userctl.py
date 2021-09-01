@@ -53,8 +53,8 @@ async def adduser_admin(newuser: user):
             check = "tai khoan da ton tai"
             break
         else:
-            sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}')"
-            conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,newuser.role))
+            sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`,`image`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
+            conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,newuser.role,newuser.image))
             check = "them thanh cong"
     return check
 
@@ -67,8 +67,8 @@ async def adduser_default(newuser: user):
             check = "tai khoan hoac email da ton tai"
             break
         else:
-            sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}')"
-            conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,"default"))
+            sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
+            conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,"default",newuser.image))
             check = "them thanh cong"
     return check
 
@@ -81,7 +81,8 @@ async def updateuser(id: int, newuser: user):
         email = newuser.email,
         username = newuser.username,
         password = newuser.password,
-        role = newuser.role
+        role = newuser.role,
+        image = newuser.image
     ).where(userdb.c.id==id))
     return "sua thanh cong"
 

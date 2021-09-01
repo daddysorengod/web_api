@@ -8,3 +8,4 @@ class user(BaseModel):
     username: str
     password:str
     role: str
+    image: str
