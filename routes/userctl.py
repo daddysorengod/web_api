@@ -2,6 +2,7 @@
 # import re
 from fastapi import APIRouter
 from fastapi.params import Form
+from sqlalchemy import sql
 from config.db import conn 
 from models.index import userdb
 from schemas.index import user
@@ -46,31 +47,45 @@ async def findUserbyName(name:str):
 
 @userctl.post("/user/adduserfromadmin")
 async def adduser_admin(newuser: user):
-    check:str
+    check = True
+    msg: str
     rs = conn.execute(userdb.select()).fetchall()
     for humman in rs:
         if humman['username'] == newuser.username or humman['email']==newuser.email: 
-            check = "tai khoan da ton tai"
+            check = False
             break
-        else:
-            sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`,`image`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
-            conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,newuser.role,newuser.image))
-            check = "them thanh cong"
-    return check
+    if check == False:
+        msg = "tai khoan hoac email da dc dang ky"
+    else: 
+        conn.execute(userdb.insert().values(
+            name = newuser.name,
+            dob = newuser.dob,
+            email = newuser.email,
+            username = newuser.username,
+            password = newuser.password,
+            role = newuser.role,
+            image = newuser.image
+        ))   
+        msg = "them thanh cong"
+    return msg
 
 @userctl.post("/user/adduserdefault")
 async def adduser_default(newuser: user):
-    check:str
+    check = True
+    msg: str
+    newuser.role = "default"
     rs = conn.execute(userdb.select()).fetchall()
     for humman in rs:
-        if humman['username'] == newuser.username or humman['email']==newuser.email:
-            check = "tai khoan hoac email da ton tai"
+        if humman['username'] == newuser.username or humman['email']==newuser.email: 
+            check = False
             break
-        else:
-            sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
-            conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,"default",newuser.image))
-            check = "them thanh cong"
-    return check
+    if check == False:
+        msg = "tai khoan hoac email da dc dang ky"
+    else:
+        sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`,`image`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
+        conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,"default",newuser.image))
+        msg = "them thanh cong"
+    return msg
 
 
 @userctl.put("/user/{id}")
