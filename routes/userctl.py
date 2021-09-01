@@ -92,7 +92,6 @@ async def adduser_default(newuser: user):
 async def updateuser(id: int, newuser: user):
     check = True
     msg: str
-    newuser.role = "default"
     rs = conn.execute(userdb.select()).fetchall()
     for humman in rs:
         if humman['username'] == newuser.username or humman['email']==newuser.email: 
