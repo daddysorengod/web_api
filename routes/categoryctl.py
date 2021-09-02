@@ -25,13 +25,14 @@ async def findCategorybyName(name:str):
 @categoryctl.post("/category")
 async def addcategory(newcategory:category):
     conn.execute(categorydb.insert().values(
-        name = newcategory.name
+        name = newcategory.name,
+        image = newcategory.image,
     ))
     return "them thanh cong"
     
 @categoryctl.put("/category/{id}")
 async def updatecategory(id:int,newcategory:category):
-    conn.execute(categorydb.update().values(name = newcategory.name).where(categorydb.c.id==id))
+    conn.execute(categorydb.update().values(name = newcategory.name,image = newcategory.image).where(categorydb.c.id==id))
     return "sua thanh cong"
 
 @categoryctl.delete("/category/{id}")

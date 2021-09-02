@@ -61,6 +61,7 @@ async def adduser_admin(newuser: user):
             name = newuser.name,
             dob = newuser.dob,
             email = newuser.email,
+            phone = newuser.phone,
             username = newuser.username,
             password = newuser.password,
             role = newuser.role,
@@ -69,23 +70,23 @@ async def adduser_admin(newuser: user):
         msg = "them thanh cong"
     return msg
 
-@userctl.post("/user/adduserdefault")
-async def adduser_default(newuser: user):
-    check = True
-    msg: str
-    newuser.role = "default"
-    rs = conn.execute(userdb.select()).fetchall()
-    for humman in rs:
-        if humman['username'] == newuser.username or humman['email']==newuser.email: 
-            check = False
-            break
-    if check == False:
-        msg = "tai khoan hoac email da dc dang ky"
-    else:
-        sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`,`image`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
-        conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,"default",newuser.image))
-        msg = "them thanh cong"
-    return msg
+# @userctl.post("/user/adduserdefault")
+# async def adduser_default(newuser: user):
+#     check = True
+#     msg: str
+#     newuser.role = "default"
+#     rs = conn.execute(userdb.select()).fetchall()
+#     for humman in rs:
+#         if humman['username'] == newuser.username or humman['email']==newuser.email: 
+#             check = False
+#             break
+#     if check == False:
+#         msg = "tai khoan hoac email da dc dang ky"
+#     else:
+#         sql = "INSERT INTO `dbapi`.`tbl_user` (`name`, `dob`, `email`, `phone`, `username`, `password`,`role`,`image`) VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}','{}')"
+#         conn.execute(sql.format(newuser.name,newuser.dob,newuser.email,newuser.phone,newuser.username,newuser.password,"default",newuser.image))
+#         msg = "them thanh cong"
+#     return msg
 
 
 @userctl.put("/user/{id}")
