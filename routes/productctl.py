@@ -86,7 +86,6 @@ async def addproduct(newproduct: product):
             product_description = newproduct.product_description,
             product_hot = newproduct.product_hot
         ))
-        
         return "them thanh cong" 
 
 

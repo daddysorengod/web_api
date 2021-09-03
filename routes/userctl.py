@@ -1,6 +1,6 @@
 # from os import name
 # import re
-from fastapi import APIRouter
+from fastapi import APIRouter,HTTPException
 from fastapi.params import Form
 from sqlalchemy import sql
 from config.db import conn 
@@ -48,14 +48,15 @@ async def findUserbyName(name:str):
 @userctl.post("/user/adduserfromadmin")
 async def adduser_admin(newuser: user):
     check = True
-    msg: str
+    # msg: str
     rs = conn.execute(userdb.select()).fetchall()
     for humman in rs:
         if humman['username'] == newuser.username or humman['email']==newuser.email: 
             check = False
             break
     if check == False:
-        msg = "tai khoan hoac email da dc dang ky"
+        # msg = "tai khoan hoac email da dc dang ky"
+        raise HTTPException(status_code=422,detail="registered account or email")
     else: 
         conn.execute(userdb.insert().values(
             name = newuser.name,
@@ -67,8 +68,8 @@ async def adduser_admin(newuser: user):
             role = newuser.role,
             image = newuser.image
         ))   
-        msg = "them thanh cong"
-    return msg
+        # msg = "them thanh cong"
+        raise HTTPException(status_code=200,detail="complete")
 
 # @userctl.post("/user/adduserdefault")
 # async def adduser_default(newuser: user):
