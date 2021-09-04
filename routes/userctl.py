@@ -1,8 +1,11 @@
 # from os import name
 # import re
+import re
 from fastapi import APIRouter,HTTPException
+from fastapi.exceptions import RequestValidationError
 from fastapi.params import Form
 from sqlalchemy import sql
+from starlette.responses import Response
 from config.db import conn 
 from models.index import userdb
 from schemas.index import user
@@ -18,7 +21,7 @@ async def showalluser():
 @userctl.get("/user/searchID={id}")
 async def findUserbyid(id:int): 
     sql = "select * from tbl_user where `tbl_user`.`id`={}"
-    return conn.execute(sql.format(id)).fetchall()
+    return conn.execute(sql.format(id)).fetchone()
     # return sql.format(id)
 
 
@@ -92,17 +95,7 @@ async def adduser_admin(newuser: user):
 
 @userctl.put("/user/{id}")
 async def updateuser(id: int, newuser: user):
-    check = True
-    msg: str
-    rs = conn.execute(userdb.select()).fetchall()
-    for humman in rs:
-        if humman['username'] == newuser.username or humman['email']==newuser.email: 
-            check = False
-            break
-    if check == False:
-        msg = "tai khoan hoac email da dc dang ky"
-    else:    
-        conn.execute(userdb.update().values(
+    conn.execute(userdb.update().values(
             name = newuser.name,
             dob = newuser.dob,
             email = newuser.email,
@@ -111,8 +104,12 @@ async def updateuser(id: int, newuser: user):
             role = newuser.role,
             image = newuser.image
         ).where(userdb.c.id==id))
-        msg = "sua thanh cong"
-    return msg
+    return
+@userctl.put("/userPwd/{id}")
+async def update(id: int,newpassword:str = Form(...)):
+    sql = "UPDATE `tbl_user` SET `password` = '{}' WHERE `tbl_user`.`id` = {}"
+    conn.execute(sql.format(newpassword,id))
+    raise HTTPException(status_code=200,detail="complete") 
 
 @userctl.delete("/user/{id}")
 async def deleteuser(id: int):
@@ -123,23 +120,21 @@ async def deleteuser(id: int):
             check = True
             break
     if check == False:
-        msg = "khong ton tai nguoi dung"
+        raise HTTPException(status_code=422,detail="incomplete") 
     else:
         conn.execute(userdb.delete().where(userdb.c.id==id))
-        msg = "xoa thanh cong"
-    return msg
+        raise HTTPException(status_code=200,detail="delete complete") 
 
 @userctl.post("/user/login")
 async def login_app(username:str = Form(...), password:str = Form(...)):
-    check: str
+    # check: str
     data = conn.execute(userdb.select()).fetchall()
     for humman in data:
         if humman['username'] == username and humman['password']==password:
             if humman['role']=='admin':
-               check = humman['role']
+               raise HTTPException(status_code=200,detail=humman['role'])
             else:
-                check = humman['role']
+                raise HTTPException(status_code=200,detail=humman['role'])
             break 
         else:
-            check = "login hut me may roi"
-    return check
+            raise HTTPException(status_code=422,detail="login fail")

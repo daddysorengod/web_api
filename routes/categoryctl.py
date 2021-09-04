@@ -15,7 +15,7 @@ async def showallcategory():
 @categoryctl.get("/category/{id}")
 async def findCategorybyid(id:int):
     sql = "select * from tbl_category where `tbl_category`.`id` ={}"
-    return conn.execute(sql.format(id)).fetchall()
+    return conn.execute(sql.format(id)).fetchone()
 
 @categoryctl.get("/category/{name}")
 async def findCategorybyName(name:str):

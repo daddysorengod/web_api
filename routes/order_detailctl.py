@@ -13,7 +13,7 @@ async def getallorderdetail():
 @order_detailctl.get("/detail/{id}")
 async def getorderdetailbyid(id: int):
     sql = "select * from tbl_order_detail where `tbl_order_detail`.`id` ={}"
-    return conn.execute(sql.format(id)).fetchall()
+    return conn.execute(sql.format(id)).fetchone()
 
 @order_detailctl.post("/detail/")
 async def addoderdetail(newod:order_detail):
