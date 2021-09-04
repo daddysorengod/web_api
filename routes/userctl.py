@@ -127,14 +127,11 @@ async def deleteuser(id: int):
 
 @userctl.post("/user/login")
 async def login_app(username:str = Form(...), password:str = Form(...)):
-    # check: str
     data = conn.execute(userdb.select()).fetchall()
     for humman in data:
         if humman['username'] == username and humman['password']==password:
-            if humman['role']=='admin':
-               raise HTTPException(status_code=200,detail=humman['role'])
-            else:
-                raise HTTPException(status_code=200,detail=humman['role'])
+            rs = conn.execute(userdb.select().where(userdb.c.username==username and userdb.c.password==password)).fetchone()
             break 
         else:
             raise HTTPException(status_code=422,detail="login fail")
+    return rs
