@@ -1,8 +1,80 @@
 from models.index import userdb
-# from schemas.index import user
+from schemas.index import user,account
 from config.db import conn
-
+from fastapi import HTTPException
 
 def getListuser():
     return conn.execute(userdb.select()).fetchall()
+
+def getUserById(id: int):
+    return conn.execute(userdb.select().where(userdb.c.id==id)).fetchone()
+
+def getUserByName(name:str):
+    sql = "select * from tbl_user where `tbl_user`.`name` like %s"
+    return conn.execute(sql,("%"+name+"%")).fetchall()
+
+def addUser(newuser: user):
+    check = True
+    rs = conn.execute(userdb.select()).fetchall()
+    for humman in rs:
+        if humman['username'] == newuser.username or humman['email']==newuser.email: 
+            check = False
+            break
+    if check == False:
+        raise HTTPException(status_code=422,detail="registered account or email")
+    else: 
+        conn.execute(userdb.insert().values(
+            name = newuser.name,
+            dob = newuser.dob,
+            email = newuser.email,
+            phone = newuser.phone,
+            username = newuser.username,
+            password = newuser.password,
+            role = newuser.role,
+            image = newuser.image
+        ))   
+        raise HTTPException(status_code=200,detail="complete")
     
+def updateUser(id:int , newuser: user):
+    conn.execute(userdb.update().values(
+            name = newuser.name,
+            dob = newuser.dob,
+            email = newuser.email,
+            username = newuser.username,
+            password = newuser.password,
+            role = newuser.role,
+            image = newuser.image
+        ).where(userdb.c.id==id))
+    return
+
+def updatePassword(id:int, newpassword:str):
+    # sql = "UPDATE `tbl_user` SET `password` = '{}' WHERE `tbl_user`.`id` = {}"
+    # conn.execute(sql.format(newpassword,id))
+    return newpassword
+
+def deleteUser(id: int):
+    check = False
+    rs = conn.execute(userdb.select()).fetchall()
+    for humman in rs:
+        if humman['id'] == id:
+            check = True
+            break
+    if check == False:
+        raise HTTPException(status_code=422,detail="incomplete") 
+    else:
+        conn.execute(userdb.delete().where(userdb.c.id==id))
+        raise HTTPException(status_code=200,detail="delete complete") 
+    
+def login(loginAccount:account):
+    data = conn.execute(userdb.select()).fetchall()
+    for row in data:
+        if row['username'] != loginAccount.username:
+            raise HTTPException(status_code=422,detail="username incorrect")
+        else:
+            if row['password'] != loginAccount.password:
+                raise HTTPException(status_code=422,detail="password incorrect")
+            else:
+                if row['username'] == loginAccount.username and row['password'] == loginAccount.password:
+                    rs = conn.execute(userdb.select().where(userdb.c.username==loginAccount.username and userdb.c.password==loginAccount.password)).fetchone()
+                    break
+    return rs
