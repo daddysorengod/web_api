@@ -1,7 +1,7 @@
 from fastapi import APIRouter,HTTPException
 from config.db import conn 
 from models.index import userdb
-from schemas.index import user,account
+from schemas.index import user,account,passwordupdate
 from controllers import user_controller
 
 userctl = APIRouter()
@@ -29,9 +29,8 @@ async def updateuser(id: int, newuser: user):
     return user_controller.updateUser(id,newuser)
 
 @userctl.put("/user/rePwd/{id}")
-async def update(id: int,newpassword:str):
-    # return user_controller.updatePassword(id,newpassword) 
-    return newpassword
+async def update(id: int,newpassword:passwordupdate):
+    return user_controller.updatePassword(id,newpassword) 
 
 @userctl.delete("/user/{id}")
 async def deleteuser(id: int):

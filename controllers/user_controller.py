@@ -1,5 +1,5 @@
 from models.index import userdb
-from schemas.index import user,account
+from schemas.index import user,account,passwordupdate
 from config.db import conn
 from fastapi import HTTPException
 
@@ -47,11 +47,21 @@ def updateUser(id:int , newuser: user):
         ).where(userdb.c.id==id))
     return
 
-def updatePassword(id:int, newpassword:str):
-    # sql = "UPDATE `tbl_user` SET `password` = '{}' WHERE `tbl_user`.`id` = {}"
-    # conn.execute(sql.format(newpassword,id))
-    return newpassword
-
+def updatePassword(id:int, newpassword:passwordupdate):
+    rs = conn.execute(userdb.select()).fetchall()
+    sql = "UPDATE `tbl_user` SET `password` = '{}' WHERE `tbl_user`.`id` = {}"
+    for row in rs:
+        if row['id']==id and newpassword.current==row['password']:
+            conn.execute(sql.format(newpassword.new,id))
+            ok = True
+            break
+        else:
+            ok = False
+    if ok == False:
+        raise HTTPException(status_code=422,detail="update fail")
+    else:
+        return "update complete!"
+        
 def deleteUser(id: int):
     check = False
     rs = conn.execute(userdb.select()).fetchall()
