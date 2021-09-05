@@ -67,14 +67,16 @@ def deleteUser(id: int):
     
 def login(loginAccount:account):
     data = conn.execute(userdb.select()).fetchall()
+    ok = False
     for row in data:
-        if row['username'] != loginAccount.username:
-            raise HTTPException(status_code=422,detail="username incorrect")
+        if row['username']==loginAccount.username and row['password']==loginAccount.password:
+            rs = conn.execute(userdb.select().where(userdb.c.username==loginAccount.username and userdb.c.password==loginAccount.password)).fetchone()
+            ok = True
+            break
         else:
-            if row['password'] != loginAccount.password:
-                raise HTTPException(status_code=422,detail="password incorrect")
-            else:
-                if row['username'] == loginAccount.username and row['password'] == loginAccount.password:
-                    rs = conn.execute(userdb.select().where(userdb.c.username==loginAccount.username and userdb.c.password==loginAccount.password)).fetchone()
-                    break
-    return rs
+            ok = False
+    
+    if ok == False: 
+        raise HTTPException(status_code=422,detail="username or password is incorrect!")
+    else:
+        return rs
