@@ -1,6 +1,6 @@
 from config.db import conn
-from models.index import order_detaildb,objectsearch
-from schemas.index import order_detail
+from models.index import order_detaildb
+from schemas.index import order_detail,objectsearch
 from fastapi import APIRouter
 from controllers import orderdetail_controller
 order_detailctl = APIRouter()
