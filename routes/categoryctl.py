@@ -1,6 +1,5 @@
 from schemas.Objectsearch import objectsearch
 from fastapi import APIRouter
-# from sqlalchemy import lo
 from config.db import conn 
 from models.index import categorydb
 from schemas.index import category

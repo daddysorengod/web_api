@@ -8,8 +8,8 @@ def getallorderdetail():
     # return conn.execute(order_detaildb.select()).fetchall()
 
 def getorderdetailbyodercode(code: str):
-    sql = "select * from tbl_order_detail where `tbl_order_detail`.`id` ={}"
-    return conn.execute(sql.format(code)).fetchall()
+    sql = "select * from tbl_order_detail where `tbl_order_detail`.`order_detail_code` like %s"
+    return conn.execute(sql,("%"+code+"%")).fetchall()
 
 def  addOrderdetail(newod: order_detail):
     conn.execute(order_detaildb.insert().values(
