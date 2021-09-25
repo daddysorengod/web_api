@@ -64,7 +64,7 @@ def getproductbyname(name:str):
     
 def addproduct(newproduct: product):
     conn.execute(productdb.insert().values(
-            product_name = newproduct.product_name,
+            product_name = newproduct.product_name.lower(),
             category_id = newproduct.category_id,
             product_quantity = newproduct.product_quantity,
             product_price = newproduct.product_price,
@@ -77,7 +77,7 @@ def addproduct(newproduct: product):
 
 def updateproduct(id: int, newproduct:product):
     conn.execute(productdb.update().values(
-        product_name = newproduct.product_name,
+        product_name = newproduct.product_name.lower(),
         category_id = newproduct.category_id,
         product_quantity = newproduct.product_quantity,
         product_price = newproduct.product_price,

@@ -1,19 +1,17 @@
 from config.db import conn
-from models.index import order_detaildb
+from models.index import order_detaildb,objectsearch
 from schemas.index import order_detail
 from fastapi import APIRouter
-
+from controllers import orderdetail_controller
 order_detailctl = APIRouter()
 
 @order_detailctl.get("/detail/")
 async def getallorderdetail():
-    sql = "select * from tbl_order_detail"
-    return conn.execute(sql).fetchall()
+    return orderdetail_controller.getallorderdetail()
 
-@order_detailctl.get("/detail/{id}")
-async def getorderdetailbyid(id: int):
-    sql = "select * from tbl_order_detail where `tbl_order_detail`.`id` ={}"
-    return conn.execute(sql.format(id)).fetchone()
+@order_detailctl.post("/detail_code")
+async def getorderdetailbyid(code:objectsearch):
+    return orderdetail_controller.getorderdetailbyodercode(code.key)
 
 @order_detailctl.post("/detail/")
 async def addoderdetail(newod:order_detail):

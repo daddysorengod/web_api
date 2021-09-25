@@ -10,11 +10,11 @@ def getcategorybyid(id: int):
 
 def getcategorybyname(name:str):
     sql = "select * from tbl_category where `tbl_category`.`name` like %s"
-    return conn.execute(sql,("%"+name+"%")).fetchall()
+    return conn.execute(sql,("%"+name.lower()+"%")).fetchall()
 
 def addCategory(newcategory:category):
     conn.execute(categorydb.insert().values(
-        name = newcategory.name,
+        name = newcategory.name.lower(),
         image = newcategory.image,
     ))
     return "them thanh cong"

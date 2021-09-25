@@ -1,3 +1,4 @@
+from schemas.Objectsearch import objectsearch
 from fastapi import APIRouter
 # from sqlalchemy import lo
 from config.db import conn 
@@ -15,9 +16,9 @@ async def showallcategory():
 async def findCategorybyid(id:int):
     return category_controller.getcategorybyid(id)
 
-@categoryctl.get("/category/{name}")
-async def findCategorybyName(name:str):
-    return category_controller.getcategorybyname(name)
+@categoryctl.get("/category")
+async def findCategorybyName(name:objectsearch):
+    return category_controller.getcategorybyname(name.key)
 
 @categoryctl.post("/category")
 async def addcategory(newcategory:category):
