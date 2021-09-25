@@ -1,3 +1,4 @@
+from schemas.Objectsearch import objectsearch
 from fastapi import APIRouter,HTTPException
 from config.db import conn 
 from models.index import userdb
@@ -14,11 +15,9 @@ async def showalluser():
 async def findUserbyid(id:int): 
     return user_controller.getUserById(id)
 
-
-@userctl.get("/user/searchname/{name}")
-async def findUserbyName(name:str):
-    return user_controller.getUserByName(name)
-
+@userctl.post("/user/searchname")
+async def findUserbyName(name:objectsearch):
+    return user_controller.getUserByName(name.key)
 
 @userctl.post("/user/adduserfromadmin")
 async def adduser_admin(newuser: user):

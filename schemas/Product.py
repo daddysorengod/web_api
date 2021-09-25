@@ -9,5 +9,4 @@ class product(BaseModel):
     product_image: str
     product_description:str
     product_hot: int
-    # ctg: category
     

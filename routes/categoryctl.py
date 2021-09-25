@@ -3,41 +3,33 @@ from fastapi import APIRouter
 from config.db import conn 
 from models.index import categorydb
 from schemas.index import category
-
+from controllers import category_controller
 
 categoryctl = APIRouter()
 
 @categoryctl.get("/category")
 async def showallcategory():
-    sql = "select * from tbl_category"
-    return conn.execute(sql).fetchall()
+    return category_controller.getallcategory()
 
 @categoryctl.get("/category/{id}")
 async def findCategorybyid(id:int):
-    sql = "select * from tbl_category where `tbl_category`.`id` ={}"
-    return conn.execute(sql.format(id)).fetchone()
+    return category_controller.getcategorybyid(id)
 
 @categoryctl.get("/category/{name}")
 async def findCategorybyName(name:str):
-    sql = "select * from tbl_category where `tbl_category`.`name` like %s"
-    return conn.execute(sql,("%"+name+"%")).fetchall()
+    return category_controller.getcategorybyname(name)
 
 @categoryctl.post("/category")
 async def addcategory(newcategory:category):
-    conn.execute(categorydb.insert().values(
-        name = newcategory.name,
-        image = newcategory.image,
-    ))
-    return "them thanh cong"
+    return category_controller.addCategory(newcategory)
     
 @categoryctl.put("/category/{id}")
-async def updatecategory(id:int,newcategory:category):
-    conn.execute(categorydb.update().values(name = newcategory.name,image = newcategory.image).where(categorydb.c.id==id))
-    return "sua thanh cong"
+async def updateDategory(id:int,newcategory:category):
+    return category_controller.updatecategory(id,newcategory)
+
 
 @categoryctl.delete("/category/{id}")
 async def deletecategory(id: int):
-    conn.execute(categorydb.delete().where(categorydb.c.id==id))
-    return "xoa thanh cong"
+    return category_controller.deleteCategory(id)
 
 
