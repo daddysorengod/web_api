@@ -17,12 +17,12 @@ def addCategory(newcategory:category):
         name = newcategory.name.lower(),
         image = newcategory.image,
     ))
-    return "them thanh cong"
+    return "complete!"
 
 def updateCategory(id: int,newcategory:category):
     conn.execute(categorydb.update().values(name = newcategory.name,image = newcategory.image).where(categorydb.c.id==id))
-    return "sua thanh cong"
+    return "complete!"
 
 def deleteCategory(id: int):
     conn.execute(categorydb.delete().where(categorydb.c.id==id))
-    return "xoa thanh cong"
+    return "complete!"

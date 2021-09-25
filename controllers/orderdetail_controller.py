@@ -10,3 +10,24 @@ def getallorderdetail():
 def getorderdetailbyodercode(code: str):
     sql = "select * from tbl_order_detail where `tbl_order_detail`.`id` ={}"
     return conn.execute(sql.format(code)).fetchall()
+
+def  addOrderdetail(newod: order_detail):
+    conn.execute(order_detaildb.insert().values(
+        order_detail_code = newod.order_detail_code,
+        product_id = newod.product_id,
+        order_detail_quantity = newod.order_detail_quantity
+    ))
+    return "complete!"
+
+def updateOrderdetail(id: int, newod: order_detail):
+    conn.execute(order_detaildb.update().values(
+        order_detail_code = newod.order_detail_code,
+        product_id = newod.product_id,
+        order_detail_quantity = newod.order_detail_quantity
+    ))
+    return "complete!"
+
+def deleteorderbyid(id: int):
+    conn.execute(order_detaildb.delete().where(order_detaildb.c.id==id))
+    return "complete!"
+

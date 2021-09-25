@@ -25,8 +25,8 @@ async def addcategory(newcategory:category):
     return category_controller.addCategory(newcategory)
     
 @categoryctl.put("/category/{id}")
-async def updateDategory(id:int,newcategory:category):
-    return category_controller.updatecategory(id,newcategory)
+async def updatecategory(id:int,newcategory:category):
+    return category_controller.updateCategory(id,newcategory)
 
 
 @categoryctl.delete("/category/{id}")
