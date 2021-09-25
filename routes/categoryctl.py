@@ -16,7 +16,7 @@ async def showallcategory():
 async def findCategorybyid(id:int):
     return category_controller.getcategorybyid(id)
 
-@categoryctl.get("/category")
+@categoryctl.post("/category")
 async def findCategorybyName(name:objectsearch):
     return category_controller.getcategorybyname(name.key)
 
