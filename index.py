@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes.index import userctl,categoryctl,productctl,orderctl,order_detailctl
+from routes.index import userctl,categoryctl,productctl,orderctl,order_detailctl,stockctl
 
 
 app = FastAPI()
@@ -8,3 +8,4 @@ app.include_router(categoryctl)
 app.include_router(productctl)
 app.include_router(orderctl)
 app.include_router(order_detailctl)
+app.include_router(stockctl)

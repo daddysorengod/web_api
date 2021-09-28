@@ -1,5 +1,3 @@
-from config.db import conn
-from models.index import order_detaildb
 from schemas.index import order_detail,objectsearch
 from fastapi import APIRouter
 from controllers import orderdetail_controller
@@ -25,3 +23,4 @@ async def updateOrderdetail(id: int, newod: order_detail):
 @order_detailctl.delete("/detail/{id}")
 async def deleteoderdetail(id:int):
     return orderdetail_controller.deleteorderbyid(id)
+

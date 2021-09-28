@@ -16,7 +16,7 @@ async def findproductbyID(id: int):
 
 @productctl.post("/product/searchname")
 async def findproductbyName(name:objectsearch):
-    return product_controller.getproductbyname(name.key)
+    return product_controller.getproductbyname(name.key.lower())
 
 @productctl.post("/product")
 async def addproduct(newproduct: product):

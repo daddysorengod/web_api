@@ -24,7 +24,7 @@ def updateOrderdetail(id: int, newod: order_detail):
         order_detail_code = newod.order_detail_code,
         product_id = newod.product_id,
         order_detail_quantity = newod.order_detail_quantity
-    ))
+    ).where(order_detaildb.c.id==id))
     return "complete!"
 
 def deleteorderbyid(id: int):
