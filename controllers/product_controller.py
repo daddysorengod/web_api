@@ -87,6 +87,10 @@ def updateproduct(id: int, newproduct:product):
     ).where(productdb.c.id==id)) 
     return "complete"
 
+def buyproduct(id: int,quantity: int):
+    conn.execute(productdb.update().values(product_quantity = quantity).where(productdb.c.id==id))
+    # return    
+
 def deleteproduct(id: int):
     conn.execute(productdb.delete().where(productdb.c.id==id))
     return "complete"

@@ -9,3 +9,4 @@ class user(BaseModel):
     password:str
     role: str
     image: str
+    address: str

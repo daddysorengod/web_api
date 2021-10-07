@@ -8,6 +8,10 @@ stockctl = APIRouter()
 async def showall():
     return stock_controller.getallstock()
 
+@stockctl.get("/stock/{id}")
+async def getbyid(id: int):
+    return stock_controller.getstockbyid(id);
+
 @stockctl.post("/stock/create")
 async def createstock(newstock: stock):
     return stock_controller.addstock(newstock)

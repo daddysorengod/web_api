@@ -1,34 +1,32 @@
 from schemas.Objectsearch import objectsearch
 from fastapi import APIRouter
-from config.db import conn 
-from models.index import categorydb
 from schemas.index import category
 from controllers import category_controller
 
-categoryctl = APIRouter()
+category_rt = APIRouter()
 
-@categoryctl.get("/category")
+@category_rt.get("/category")
 async def showallcategory():
     return category_controller.getallcategory()
 
-@categoryctl.get("/category/{id}")
+@category_rt.get("/category/{id}")
 async def findCategorybyid(id:int):
     return category_controller.getcategorybyid(id)
 
-@categoryctl.post("/category/searchname")
+@category_rt.post("/category/searchname")
 async def findCategorybyName(name:objectsearch):
     return category_controller.getcategorybyname(name.key)
 
-@categoryctl.post("/category")
+@category_rt.post("/category")
 async def addcategory(newcategory:category):
     return category_controller.addCategory(newcategory)
     
-@categoryctl.put("/category/{id}")
+@category_rt.put("/category/{id}")
 async def updatecategory(id:int,newcategory:category):
     return category_controller.updateCategory(id,newcategory)
 
 
-@categoryctl.delete("/category/{id}")
+@category_rt.delete("/category/{id}")
 async def deletecategory(id: int):
     return category_controller.deleteCategory(id)
 

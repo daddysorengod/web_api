@@ -1,4 +1,4 @@
-from models.User import userdb
+from models.User import accountdb
 from models.product import productdb
 from models.category import categorydb
 from models.order import orderdb

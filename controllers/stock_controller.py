@@ -8,6 +8,9 @@ def getallstock():
     # sql = "select * from tbl_stock"
     return conn.execute(stockdb.select()).fetchall()
 
+def getstockbyid(id: int):
+    return conn.execute(stockdb.select().where(stockdb.c.stock_id==id)).fetchone()
+
 def addstock(newstock: stock):
     conn.execute(stockdb.insert().values(
         stock_product = newstock.stock_product,

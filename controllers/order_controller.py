@@ -1,7 +1,7 @@
 from config.db import conn
 from models.index import orderdb
 from schemas.index import order
-
+from datetime import datetime
 
 def getallorder():
     sql = "select * from tbl_order"
@@ -33,6 +33,9 @@ def updateorderbyid(id: int, neworder: order):
         status = neworder.status
     ).where(orderdb.c.id==id))
     return "complete"
+
+def filterbydate(date :str):
+    return conn.execute(orderdb.select().where(orderdb.c.order_date==datetime.strptime(date,"%Y-%m-%d"))).fetchall()    
 
 def deleteorderbyid(id: int):
     conn.execute(orderdb.delete().where(orderdb.c.id==id))
