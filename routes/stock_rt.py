@@ -2,28 +2,28 @@ from fastapi import APIRouter
 from controllers import stock_controller
 from schemas.index import stock,objectsearch
 
-stockctl = APIRouter()
+stock_rt = APIRouter()
 
-@stockctl.get("/stock")
+@stock_rt.get("/stock")
 async def showall():
     return stock_controller.getallstock()
 
-@stockctl.get("/stock/{id}")
+@stock_rt.get("/stock/{id}")
 async def getbyid(id: int):
     return stock_controller.getstockbyid(id);
 
-@stockctl.post("/stock/create")
+@stock_rt.post("/stock/create")
 async def createstock(newstock: stock):
     return stock_controller.addstock(newstock)
 
-@stockctl.put("/stock/update/{id}")
+@stock_rt.put("/stock/update/{id}")
 async def updatestockbyid(id: int, newstock:stock):
     return stock_controller.updatestock(id,newstock)
 
-@stockctl.delete("/stock/{id}")
+@stock_rt.delete("/stock/{id}")
 async def deletestockbyid(id: int):
     return stock_controller.deletestock(id)
 
-@stockctl.post("/stock/filterbydate")
+@stock_rt.post("/stock/filterbydate")
 async def filterbydate(date:objectsearch):
     return stock_controller.datefilter(date.key)
