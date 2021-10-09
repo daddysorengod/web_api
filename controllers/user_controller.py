@@ -10,7 +10,7 @@ def getUserById(id: int):
     return conn.execute(accountdb.select().where(accountdb.c.id==id)).fetchone()
 
 def getUserByName(name:str):
-    sql = "select * from tbl_user where `tbl_user`.`name` like %s"
+    sql = "select * from tbl_account where `tbl_account`.`name` like %s"
     return conn.execute(sql,("%"+name+"%")).fetchall()
 
 def addUser(newuser: user):
@@ -55,7 +55,7 @@ def updateimageuser(id:int , image:str):
 
 def updatePassword(id:int, newpassword:passwordupdate):
     rs = conn.execute(accountdb.select()).fetchall()
-    sql = "UPDATE `tbl_user` SET `password` = '{}' WHERE `tbl_user`.`id` = {}"
+    sql = "UPDATE `tbl_account` SET `password` = '{}' WHERE `tbl_account`.`id` = {}"
     for row in rs:
         if row['id']==id and newpassword.current==row['password']:
             conn.execute(sql.format(newpassword.new,id))

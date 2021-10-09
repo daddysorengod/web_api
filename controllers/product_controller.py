@@ -19,6 +19,7 @@ def getallproduct():
             "product_image": row['product_image'],
             "product_description": row['product_description'],
             "product_hot": row['product_hot'],
+            
             "category": getCategory(row['category_id'])
         }
         arrRS.append(rs)

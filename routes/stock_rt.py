@@ -10,7 +10,7 @@ async def showall():
 
 @stock_rt.get("/stock/{id}")
 async def getbyid(id: int):
-    return stock_controller.getstockbyid(id);
+    return stock_controller.getstockbyid(id)
 
 @stock_rt.post("/stock/create")
 async def createstock(newstock: stock):

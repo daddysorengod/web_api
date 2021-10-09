@@ -9,5 +9,7 @@ stockdb = Table(
     Column("stock_category_id",Integer),
     Column("stock_quantity",Integer),
     Column("stock_purchaseprice",String(255)),
-    Column("stock_date",DateTime)
+    Column("stock_date",DateTime),
+    Column("status",Integer),
+    Column("employee_id",Integer)
 )

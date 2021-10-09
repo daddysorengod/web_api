@@ -1,11 +1,32 @@
 from config.db import conn
-from models.index import stockdb
+from models.index import stockdb,accountdb
 from schemas.index import stock
 from datetime import datetime
 
 
+def getUserById(id: int):
+    return conn.execute(accountdb.select().where(accountdb.c.id==id)).fetchone()
+
 def getallstock():
-    return conn.execute(stockdb.select()).fetchall()
+    rsPd = conn.execute(stockdb.select()).fetchall()
+    arrRS = []
+    for row in rsPd:
+        rs = {
+            "stock_id": row['stock_id'],
+            "stock_product": row['stock_product'],
+            "stock_category_id": row['stock_category_id'],
+            "product_quantity": row['stock_quantity'],
+            "stock_purchaseprice": row['stock_purchaseprice'],
+            "stock_date": row['stock_date'],
+            "status": row['status'],
+            "employee_id": row['employee_id'],
+
+            "employee": getUserById(row['employee_id'])
+        }
+        arrRS.append(rs)
+    return arrRS
+
+
 
 def getstockbyid(id: int):
     return conn.execute(stockdb.select().where(stockdb.c.stock_id==id)).fetchone()
