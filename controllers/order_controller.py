@@ -66,8 +66,20 @@ def updateorderbyid(id: int, neworder: order):
     ).where(orderdb.c.id==id))
     return "complete"
 
-def filterbydate(date :str):
-    return conn.execute(orderdb.select().where(orderdb.c.order_date==datetime.strptime(date,"%Y-%m-%d"))).fetchall()    
+def filterbydate(date :str): 
+    rs = conn.execute(orderdb.select().where(orderdb.c.order_date==datetime.strptime(date,"%Y-%m-%d"))).fetchall()
+    arrRs = []
+    for row in rs:
+        result = {
+            "id":row['id'],
+            "order_code":row['order_code'],
+            "order_user_id":row['order_user_id'],
+            "order_date":row['order_date'],
+            "status": row['status'],
+            "user_id":user_controller.getinfouser(row['order_user_id'])
+        }
+        arrRs.append(result)        
+    return arrRs
 
 def deleteorderbyid(id: int):
     conn.execute(orderdb.delete().where(orderdb.c.id==id))
