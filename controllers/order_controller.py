@@ -2,18 +2,50 @@ from config.db import conn
 from models.index import orderdb
 from schemas.index import order
 from datetime import datetime
+from controllers import user_controller
 
 def getallorder():
-    sql = "select * from tbl_order"
-    return conn.execute(sql).fetchall()
-
+    # sql = "select * from tbl_order"
+    # return conn.execute(sql).fetchall()
+    rs = conn.execute(orderdb.select()).fetchall()
+    arrRs = []
+    for row in rs:
+        result = {
+            "id":row['id'],
+            "order_code":row['order_code'],
+            "order_user_id":row['order_user_id'],
+            "order_date":row['order_date'],
+            "status": row['status'],
+            "user_id":user_controller.getinfouser(row['order_user_id'])
+        }
+        arrRs.append(result)        
+    return arrRs
+    
 def getorderbyid(id: int):
-    sql = "select * from tbl_order where id = %s"
-    return conn.execute(sql,id).fetchone()
+    rs = conn.execute(orderdb.select().where(orderdb.c.id == id)).fetchall()
+    for row in rs:
+        result = {
+            "id":row['id'],
+            "order_code":row['order_code'],
+            "order_user_id":row['order_user_id'],
+            "order_date":row['order_date'],
+            "status": row['status'],
+            "user_id":user_controller.getinfouser(row['order_user_id'])
+        }
+    return result
 
 def getorderbyordercode(order_code:str):
-    sql = "select * from tbl_order where order_code = '{}'"
-    return conn.execute(sql.format(order_code)).fetchone()
+    rs = conn.execute(orderdb.select().where(orderdb.c.order_code == order_code)).fetchall()
+    for row in rs:
+        result = {
+            "id":row['id'],
+            "order_code":row['order_code'],
+            "order_user_id":row['order_user_id'],
+            "order_date":row['order_date'],
+            "status": row['status'],
+            "user_id":user_controller.getinfouser(row['order_user_id'])
+        }
+    return result
 
 def addneworder(neworder:order):
     conn.execute(orderdb.insert().values(

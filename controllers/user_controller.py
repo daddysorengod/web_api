@@ -96,3 +96,14 @@ def login(loginAccount:account):
         raise HTTPException(status_code=422,detail="username or password is incorrect!")
     else:
         return rs
+    
+def getinfouser(id:int):
+    rs = conn.execute(accountdb.select().where(accountdb.c.id==id)).fetchone()
+    result = {
+        "id": rs['id'],
+        "name": rs['name'],
+        "address": rs['address'],
+        "phone": rs['phone']
+    }
+    return result
+    

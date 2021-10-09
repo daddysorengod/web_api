@@ -9,7 +9,7 @@ async def showAllorder():
     return order_controller.getallorder()
 
 @order_rt.get("/order/{id}")
-async def getOderbyID(id:int):
+async def getOderbyID(id: int):
     return order_controller.getorderbyid(id)
 
 @order_rt.get("/order/code/{order_code}")
