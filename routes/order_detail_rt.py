@@ -9,7 +9,7 @@ async def getallorderdetail():
     return orderdetail_controller.getallorderdetail()
 
 @order_detail_rt.post("/detail_code")
-async def getorderdetailbyid(code:objectsearch):
+async def getorderdetailbycode(code:objectsearch):
     return orderdetail_controller.getorderdetailbyodercode(code.key)
 
 @order_detail_rt.post("/detail")

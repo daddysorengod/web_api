@@ -49,6 +49,10 @@ def updateUser(id:int , newuser: user):
         ).where(accountdb.c.id==id))
     return
 
+def updateimageuser(id:int , image:str):
+    conn.execute(accountdb.update().values(image = image).where(accountdb.c.id==id))
+    return
+
 def updatePassword(id:int, newpassword:passwordupdate):
     rs = conn.execute(accountdb.select()).fetchall()
     sql = "UPDATE `tbl_user` SET `password` = '{}' WHERE `tbl_user`.`id` = {}"

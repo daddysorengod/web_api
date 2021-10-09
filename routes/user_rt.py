@@ -25,6 +25,10 @@ async def adduser_admin(newuser: user):
 async def updateuser(id: int, newuser: user):
     return user_controller.updateUser(id,newuser)
 
+@user_rt.put("/user/updateimage/{id}")
+async def updateimage(id: int, image:objectsearch):
+    return user_controller.updateimageuser(id,image.key)
+
 @user_rt.put("/user/rePwd/{id}")
 async def update(id: int,newpassword:passwordupdate):
     return user_controller.updatePassword(id,newpassword) 

@@ -6,3 +6,5 @@ class stock(BaseModel):
     stock_quantity: int
     stock_purchaseprice: str
     stock_date: str
+    status: str
+    employee_id: int

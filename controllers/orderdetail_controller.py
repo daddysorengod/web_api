@@ -8,8 +8,10 @@ def getallorderdetail():
     # return conn.execute(order_detaildb.select()).fetchall()
 
 def getorderdetailbyodercode(code: str):
-    sql = "select * from tbl_order_detail where `tbl_order_detail`.`order_detail_code` like %s"
-    return conn.execute(sql,("%"+code+"%")).fetchall()
+    return conn.execute(order_detaildb.select().where(order_detaildb.c.order_detail.code == code))
+    
+    # sql = "select * from tbl_order_detail where `tbl_order_detail`.`order_detail_code` like %s"
+    # return conn.execute(sql,("%"+code+"%")).fetchall()
 
 def  addOrderdetail(newod: order_detail):
     rs = product_controller.getproductbyID(newod.product_id)

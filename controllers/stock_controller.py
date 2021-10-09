@@ -5,7 +5,6 @@ from datetime import datetime
 
 
 def getallstock():
-    # sql = "select * from tbl_stock"
     return conn.execute(stockdb.select()).fetchall()
 
 def getstockbyid(id: int):
@@ -17,7 +16,9 @@ def addstock(newstock: stock):
         stock_category_id = newstock.stock_category_id,
         stock_quantity = newstock.stock_quantity,
         stock_purchaseprice = newstock.stock_purchaseprice,
-        stock_date = newstock.stock_date
+        stock_date = newstock.stock_date,
+        status = newstock.stock_status,
+        employee_id = newstock.employee_id
     ))
     return "complete!"
 
@@ -27,7 +28,9 @@ def updatestock(id: int,newstock:stock):
         stock_category_id = newstock.stock_category_id,
         stock_quantity = newstock.stock_quantity,
         stock_purchaseprice = newstock.stock_purchaseprice,
-        stock_date = newstock.stock_date
+        stock_date = newstock.stock_date,
+        status = newstock.stock_status,
+        employee_id = newstock.employee_id
     ).where(stockdb.c.stock_id==id))
     return "complete"
 
