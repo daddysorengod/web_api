@@ -44,7 +44,6 @@ def updateUser(id:int , newuser: user):
             username = newuser.username,
             password = newuser.password,
             role = newuser.role,
-            image = newuser.image,
             address = newuser.address
         ).where(accountdb.c.id==id))
     return

@@ -8,9 +8,9 @@ order_detail_rt = APIRouter()
 async def getallorderdetail():
     return orderdetail_controller.getallorderdetail()
 
-@order_detail_rt.post("/detail_code")
-async def getorderdetailbycode(code:objectsearch):
-    return orderdetail_controller.getorderdetailbyodercode(code.key)
+@order_detail_rt.get("/detail_code/{order_code}")
+async def getorderdetailbycode(order_code:str):
+    return orderdetail_controller.getorderdetailbyodercode(order_code)
 
 @order_detail_rt.post("/detail")
 async def addoderdetail(newod:order_detail):
