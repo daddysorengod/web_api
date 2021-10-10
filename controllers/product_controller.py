@@ -92,6 +92,14 @@ def buyproduct(id: int,quantity: int):
     conn.execute(productdb.update().values(product_quantity = quantity).where(productdb.c.id==id))
     # return    
 
+def getproductindetail(id: int):
+    rs = conn.execute(productdb.select().where(productdb.c.id==id)).fetchone()
+    result = {
+        "product_name":rs['product_name'],
+        "product_price":rs['product_price']
+    }
+    return result
+
 def deleteproduct(id: int):
     conn.execute(productdb.delete().where(productdb.c.id==id))
     return "complete"

@@ -3,13 +3,33 @@ from models.index import order_detaildb
 from schemas.index import order_detail
 from controllers import product_controller
 def getallorderdetail():
-    sql = "select * from tbl_order_detail"
-    return conn.execute(sql).fetchall()
-    # return conn.execute(order_detaildb.select()).fetchall()
+    result = conn.execute(order_detaildb.select()).fetchall()
+    rsArr = []
+    for row in result:
+        rs = {
+            "id":row['id'],
+            "order_detail_code":row['order_detail_code'],
+            "product_id":row['product_id'],
+            "order_detail_quantity":row['order_detail_quantity'],
+            "product": product_controller.getproductindetail(row['product_id'])
+        }
+        rsArr.append(rs)
+    return rsArr
 
 def getorderdetailbyodercode(code: str):
-    return conn.execute(order_detaildb.select().where(order_detaildb.c.order_detail_code == code)).fetchall()
-    
+    result = conn.execute(order_detaildb.select().where(order_detaildb.c.order_detail_code == code)).fetchall()
+    rsArr = []
+    for row in result:
+        rs = {
+            "id":row['id'],
+            "order_detail_code":row['order_detail_code'],
+            "product_id":row['product_id'],
+            "order_detail_quantity":row['order_detail_quantity'],
+            "product": product_controller.getproductindetail(row['product_id'])
+        }
+        rsArr.append(rs)
+    return rsArr
+
 def  addOrderdetail(newod: order_detail):
     rs = product_controller.getproductbyID(newod.product_id)
     check = int(rs['product_quantity']) - int(newod.order_detail_quantity)
