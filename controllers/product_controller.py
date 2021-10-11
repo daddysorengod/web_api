@@ -43,6 +43,15 @@ def getproductbyID(id: int):
             break
     return rs
 
+def getproducthot():
+    select = "select * from tbl_product where tbl_product.product_hot = 2 ORDER BY RAND() LIMIT 3"
+    rsPdh = conn.execute(select).fetchall()
+    return rsPdh
+
+def getproductfavorite():
+    select = "select * from tbl_product where tbl_product.product_hot = 1 ORDER BY RAND() LIMIT 3"
+    rsPdh = conn.execute(select).fetchall()
+    return rsPdh
 
 def getproductbyname(name:str):
     rsPd = conn.execute(productdb.select()).fetchall()
