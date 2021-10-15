@@ -8,3 +8,4 @@ from schemas.Passwordupdate import passwordupdate
 from schemas.Objectsearch import objectsearch
 from schemas.Stock import stock
 from schemas.Cart import cart
+from schemas.Favorite import favorite
