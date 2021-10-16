@@ -22,7 +22,8 @@ def getallorder():
     return arrRs
     
 def getorderbyid(id: int):
-    rs = conn.execute(orderdb.select().where(orderdb.c.id == id)).fetchall()
+    rs = conn.execute(orderdb.select().where(orderdb.c.order_user_id == id)).fetchall()
+    array = []
     for row in rs:
         result = {
             "id":row['id'],
@@ -32,7 +33,9 @@ def getorderbyid(id: int):
             "status": row['status'],
             "user_id":user_controller.getinfouser(row['order_user_id'])
         }
-    return result
+        array.append(result)
+
+    return array
 
 def getorderbyordercode(order_code:str):
     rs = conn.execute(orderdb.select().where(orderdb.c.order_code == order_code)).fetchall()
