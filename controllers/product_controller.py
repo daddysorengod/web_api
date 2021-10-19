@@ -1,3 +1,5 @@
+from starlette.exceptions import HTTPException
+from controllers.stock_controller import getallstock
 from models.index import productdb,categorydb
 from config.db import conn
 from schemas.index import product,objectsearch
@@ -73,7 +75,16 @@ def getproductbyname(name:str):
     return result
     
 def addproduct(newproduct: product):
-    conn.execute(productdb.insert().values(
+    rs = getallstock()
+    check = False
+    for key in rs:
+        if key['stock_product'] == newproduct.product_name.lower():
+            check = True
+            break
+    if check == False:
+        raise HTTPException(status_code=422, detail="name does not exist in stock!")
+    else:
+        conn.execute(productdb.insert().values(
             product_name = newproduct.product_name.lower(),
             category_id = newproduct.category_id,
             product_quantity = newproduct.product_quantity,
@@ -81,8 +92,10 @@ def addproduct(newproduct: product):
             product_image = newproduct.product_image,
             product_description = newproduct.product_description,
             product_hot = newproduct.product_hot
-        ))
-    return "complete!"
+        )) 
+        raise HTTPException(status_code=200,detail="complete!")             
+    
+
 
 
 def updateproduct(id: int, newproduct:product):

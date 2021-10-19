@@ -30,6 +30,29 @@ def addUser(newuser: user):
             phone = newuser.phone,
             username = newuser.username,
             password = newuser.password,
+            role = "user",
+            image = newuser.image,
+            address = newuser.address
+        ))   
+        raise HTTPException(status_code=200,detail="complete")
+    
+def addUserAdmin(newuser: user):
+    check = True
+    rs = conn.execute(accountdb.select()).fetchall()
+    for humman in rs:
+        if humman['username'] == newuser.username or humman['email']==newuser.email: 
+            check = False
+            break
+    if check == False:
+        raise HTTPException(status_code=422,detail="registered account or email")
+    else: 
+        conn.execute(accountdb.insert().values(
+            name = newuser.name,
+            dob = newuser.dob,
+            email = newuser.email,
+            phone = newuser.phone,
+            username = newuser.username,
+            password = newuser.password,
             role = newuser.role,
             image = newuser.image,
             address = newuser.address
