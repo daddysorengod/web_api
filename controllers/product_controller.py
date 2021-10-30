@@ -112,3 +112,13 @@ def getproductindetail(id: int):
 def deleteproduct(id: int):
     conn.execute(productdb.delete().where(productdb.c.id==id))
     return "complete"
+
+
+def getProductByCategoryId(id: int):
+      rs = conn.execute(productdb.select().where(productdb.c.category_id==id)).fetchall()
+      return rs
+
+def changeStatusProductToFavorite(id: int,newproduct_hot):
+    conn.execute(productdb.update().values(product_hot=newproduct_hot.product_hot).where(productdb.c.id==id))
+    return "update success fully"
+

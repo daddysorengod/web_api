@@ -31,7 +31,7 @@ def getfavoritebyiduser(id):
         "status":rs[0]['status']
     }
     return result
-    
+
     # return
 def addnewfavorite(newfavorite:favorite):
     conn.execute(favoritedb.insert().values(
