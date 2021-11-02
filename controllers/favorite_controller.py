@@ -1,4 +1,8 @@
+from itertools import product
 from sqlalchemy import log
+import random
+
+from sqlalchemy.sql.functions import func
 from config.db import conn
 from models.index import favoritedb,productdb
 from schemas.index import favorite
@@ -44,3 +48,17 @@ def addnewfavorite(newfavorite:favorite):
 def deletefavorite(id):
     conn.execute(favoritedb.delete().where(favoritedb.c.id == id))
     return
+    
+def randomfavorite(id:int):
+    array = conn.execute(favoritedb.select().where(favoritedb.c.user_id==id).order_by(func.rand()).limit(3)).fetchall()
+    result = []
+    for row in array:
+        rs = {
+            "id": row['id'],
+            "user_id": row['user_id'],
+            "product_id": row['product_id'],
+            "status": row['status'],
+            "product": getProduct(row['product_id'])
+        }
+        result.append(rs)
+    return result

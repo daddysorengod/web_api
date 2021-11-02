@@ -15,3 +15,11 @@ async def addfavorite(newfavorite: favorite):
 @favorite_rt.delete('/favorite/{id}')
 async def removefavorite(id: int):
     return favorite_controller.deletefavorite(id)
+
+@favorite_rt.get('/favoriterandom/{id}')
+async def getrandom(id: int):
+    return favorite_controller.randomfavorite(id)
+
+@favorite_rt.get('/favoriteall')
+async def getFunc():
+    return favorite_controller.getallfavorite()

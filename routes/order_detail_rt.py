@@ -23,4 +23,3 @@ async def updateOrderdetail(id: int, newod: order_detail):
 @order_detail_rt.delete("/detail/{id}")
 async def deleteoderdetail(id:int):
     return orderdetail_controller.deleteorderbyid(id)
-
