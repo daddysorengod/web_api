@@ -81,15 +81,24 @@ def getproductbyname(name:str):
     
 def addproduct(newproduct: product):
     rs = getallstock()
-    check = False
+    rs1 = getallproduct()
+    checkStock = False
+    checkProduct = True
     for key in rs:
         if key['stock_product'] == newproduct.product_name.lower():
-            check = True
+            checkStock = True
             break
-    if check == False:
+    for key in rs1:
+        if key['product_name'] == newproduct.product_name.lower():
+            checkProduct = False
+            break
+    if checkStock == False:
         raise HTTPException(status_code=422, detail="name does not exist in stock!")
     else:
-        conn.execute(productdb.insert().values(
+        if checkProduct == False:
+            raise HTTPException(status_code=422,detail="product name is exist")
+        else:
+            conn.execute(productdb.insert().values(
             product_name = newproduct.product_name.lower(),
             category_id = newproduct.category_id,
             product_quantity = newproduct.product_quantity,
@@ -100,7 +109,6 @@ def addproduct(newproduct: product):
         )) 
         raise HTTPException(status_code=200,detail="complete!")             
     
-
 
 
 def updateproduct(id: int, newproduct:product):
