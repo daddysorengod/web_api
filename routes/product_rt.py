@@ -8,6 +8,10 @@ product_rt = APIRouter()
 async def showallproduct():
     return product_controller.getallproduct()
 
+@product_rt.get("/product/random")
+async def showallproductrandom():
+    return product_controller.getrandomproduct()
+
 
 @product_rt.get("/producthot")
 async def showallproducthot():
@@ -48,3 +52,4 @@ async def deleteProduct(id: int):
 @product_rt.get("/product/categoryid/{id}")
 async def showallproductbycategoryid(id: int):
     return product_controller.getProductByCategoryId(id)
+

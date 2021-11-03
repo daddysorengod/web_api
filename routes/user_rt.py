@@ -19,6 +19,10 @@ async def findUserbyName(name:objectsearch):
 
 @user_rt.post("/user/adduserfromadmin")
 async def adduser_admin(newuser: user):
+    return user_controller.addUserAdmin(newuser)
+
+@user_rt.post("/user/adduser")
+async def adduser(newuser:user):
     return user_controller.addUser(newuser)
 
 @user_rt.put("/user/{id}")

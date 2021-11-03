@@ -1,5 +1,8 @@
+import re
+from sqlalchemy.sql.expression import false, true
 from config.db import conn
 from models.index import stockdb,accountdb
+from schemas.Product import product
 from schemas.index import stock
 from datetime import datetime
 
@@ -26,14 +29,12 @@ def getallstock():
         arrRS.append(rs)
     return arrRS
 
-
-
 def getstockbyid(id: int):
     return conn.execute(stockdb.select().where(stockdb.c.stock_id==id)).fetchone()
 
 def addstock(newstock: stock):
     conn.execute(stockdb.insert().values(
-        stock_product = newstock.stock_product,
+        stock_product = newstock.stock_product.lower(),
         stock_category_id = newstock.stock_category_id,
         stock_quantity = newstock.stock_quantity,
         stock_purchaseprice = newstock.stock_purchaseprice,
@@ -45,7 +46,7 @@ def addstock(newstock: stock):
 
 def updatestock(id: int,newstock:stock):
     conn.execute(stockdb.update().values(
-        stock_product = newstock.stock_product,
+        stock_product = newstock.stock_product.lower(),
         stock_category_id = newstock.stock_category_id,
         stock_quantity = newstock.stock_quantity,
         stock_purchaseprice = newstock.stock_purchaseprice,
